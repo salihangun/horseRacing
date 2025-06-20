@@ -14,8 +14,7 @@
             style="width: 100px"
         /></div>
         <div style="width:calc(100% - 110px)" class="float-left">
-          <p class="font-bold
-">
+          <p class="font-bold">
             <span class="color-dot" :style="{ backgroundColor: horse.color }"></span>
   {{ horse.name }}
             <span class="left block text-sm" style="color:#888;">Condition: {{ horse.condition }}</span>

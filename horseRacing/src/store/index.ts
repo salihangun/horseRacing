@@ -1,15 +1,6 @@
 import { createStore } from 'vuex'
-export interface Horse {
-    id: number
-    name: string
-    color: string
-    condition: number
-}
+import type {Horse, RaceRound, State} from "../interface/state-interface.ts";
 
-
-export interface State {
-    horses: Horse[]
-}
 
 const horseColors = [
     '#332d29', '#a17853', '#785234', '#cbc5ae', '#c7c3ba', '#e2ad76', '#9d6b47',
@@ -21,6 +12,7 @@ const horseNames = [
     "Kont Filosu", "Dr. Fager", "Tutulma", "Kutsal Boğa", "Savunmak", "Kelso", "Siste Kaybolmuş", "Savaş Adamı",
     "Yerli Dansçı", "Phar Turu", "Kırmızı rom", "Serseri"
 ]
+const roundDistances = [1200, 1400, 1600, 1800, 2000, 2200]
 
 
 function generateHorses(): Horse[] {
@@ -34,6 +26,7 @@ function generateHorses(): Horse[] {
 
 const state: State = {
     horses: [],
+    raceSchedule: [],
 }
 
 export default createStore<State>({
@@ -42,10 +35,24 @@ export default createStore<State>({
         setHorses(state: State, horses: Horse[]) {
             state.horses = horses
         },
+        setRaceSchedule(state: State, schedule: RaceRound[]) {
+            state.raceSchedule = schedule
+        },
     },
     actions: {
         generateHorses({ commit }) {
             commit('setHorses', generateHorses())
+        },
+        generateRaceSchedule({ state, commit }) {
+            const schedule: RaceRound[] = roundDistances.map((distance, idx) => {
+                const shuffled = [...state.horses].sort(() => 0.5 - Math.random())
+                return {
+                    round: idx + 1,
+                    distance,
+                    horses: shuffled.slice(0, 10)
+                }
+            })
+            commit('setRaceSchedule', schedule)
         },
     }
 })
