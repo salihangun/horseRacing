@@ -1,7 +1,6 @@
 import { createStore } from 'vuex'
 import type {Horse, RaceRound, State} from "../interface/state-interface.ts";
 
-
 const horseColors = [
     '#332d29', '#a17853', '#785234', '#cbc5ae', '#c7c3ba', '#e2ad76', '#9d6b47',
     '#c1a181', '#383838', '#7c5e3c', '#b22222', '#4682b4', '#228b22', '#ff8c00',
@@ -13,7 +12,6 @@ const horseNames = [
     "Yerli Dansçı", "Phar Turu", "Kırmızı rom", "Serseri"
 ]
 const roundDistances = [1200, 1400, 1600, 1800, 2000, 2200]
-
 
 function generateHorses(): Horse[] {
     return Array.from({ length: 20 }, (_, i) => ({
@@ -27,17 +25,50 @@ function generateHorses(): Horse[] {
 const state: State = {
     horses: [],
     raceSchedule: [],
+    results: [],
+    currentRound: 0,
+    isRacing: false,
+    hasGenerated: false,
+    hasScheduled: false,
+    restartFlag: false
 }
 
 export default createStore<State>({
     state,
     mutations: {
+        triggerRestartFlag(state: State) {
+            state.restartFlag = !state.restartFlag
+        },
         setHorses(state: State, horses: Horse[]) {
             state.horses = horses
+            state.hasGenerated = true
+            state.hasScheduled = false
         },
         setRaceSchedule(state: State, schedule: RaceRound[]) {
             state.raceSchedule = schedule
+            state.currentRound = 0
+            state.hasScheduled = true
+            state.isRacing = false
+            state.results = []
         },
+        setCurrentRound(state: State, round: number) {
+            state.currentRound = round
+        },
+        setIsRacing(state: State, isRacing: boolean) {
+            state.isRacing = isRacing
+        },
+        addResult(state: State, result: RaceResult) {
+            state.results.push(result)
+        },
+        resetGame(state: State) {
+            state.horses = []
+            state.raceSchedule = []
+            state.results = []
+            state.currentRound = 0
+            state.isRacing = false
+            state.hasGenerated = false
+            state.hasScheduled = false
+        }
     },
     actions: {
         generateHorses({ commit }) {
@@ -54,5 +85,9 @@ export default createStore<State>({
             })
             commit('setRaceSchedule', schedule)
         },
+        restartGame({ commit }) {
+            commit('resetGame')
+            commit('triggerRestartFlag')
+        }
     }
 })

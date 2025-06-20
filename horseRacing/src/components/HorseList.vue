@@ -43,13 +43,4 @@ onMounted(() => {
 </script>
 
 <style scoped>
-.color-dot {
-  display: inline-block;
-  width: 18px;
-  height: 18px;
-  border-radius: 50%;
-  margin-right: 4px;
-  border: 1px solid #aaa;
-  vertical-align: middle;
-}
 </style>

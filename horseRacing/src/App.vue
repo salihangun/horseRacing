@@ -17,6 +17,15 @@
     </el-col>
   </el-row>
 
+  <el-row class="row-bg">
+    <el-col :span="24"><div class="grid-content mt-20" />
+      <RaceTrack/>
+    </el-col>
+    <el-col :span="24"><div class="grid-content mt-20" />
+      <RaceResults/>
+    </el-col>
+  </el-row>
+
   <el-footer class="footer shadow-xl">
     <GameController class="float-right mt-3" />
   </el-footer>
@@ -26,6 +35,8 @@
   import GameController from './components/GameController.vue'
   import HorseList from './components/HorseList.vue'
   import RoundSchedule from './components/RoundSchedule.vue'
+  import RaceTrack from './components/RaceTrack.vue'
+  import RaceResults from './components/RaceResults.vue'
 </script>
 
 
