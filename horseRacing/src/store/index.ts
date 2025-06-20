@@ -1,5 +1,5 @@
 import { createStore } from 'vuex'
-import type {Horse, RaceRound, State} from "../interface/state-interface.ts";
+import type { Horse, RaceRound, State, RaceResult } from "../interface/state-interface"
 
 const horseColors = [
     '#332d29', '#a17853', '#785234', '#cbc5ae', '#c7c3ba', '#e2ad76', '#9d6b47',
@@ -7,9 +7,9 @@ const horseColors = [
     '#d2691e', '#8a2be2', '#ff1493', '#2e8b57', '#00ced1', '#ffd700'
 ]
 const horseNames = [
-    "Onaylandı", "Alydar", "Amerikan Firavunu", "AP Bağımsız", "Barbaro", "Siyah Havyar", "Kalın Cetvel", "Alıntı",
-    "Kont Filosu", "Dr. Fager", "Tutulma", "Kutsal Boğa", "Savunmak", "Kelso", "Siste Kaybolmuş", "Savaş Adamı",
-    "Yerli Dansçı", "Phar Turu", "Kırmızı rom", "Serseri"
+    "Siyah Havyar", "Alydar", "Amerikan Firavunu", "AP Bağımsız", "Barbaro", "Onaylandı", "Kalın Cetvel", "Alıntı",
+    "Kont Filosu", "Dr. Fager", "Kırmızı Rom", "Kutsal Boğa", "Savunmak", "Kelso", "Siste Kaybolmuş", "Savaş Adamı",
+    "Yerli Dansçı", "Phar Turu", "Tutulma", "Serseri"
 ]
 const roundDistances = [1200, 1400, 1600, 1800, 2000, 2200]
 
@@ -33,8 +33,8 @@ const state: State = {
     restartFlag: false
 }
 
-export default createStore<State>({
-    state,
+const store = createStore({
+    state: state as State,
     mutations: {
         triggerRestartFlag(state: State) {
             state.restartFlag = !state.restartFlag
@@ -71,10 +71,10 @@ export default createStore<State>({
         }
     },
     actions: {
-        generateHorses({ commit }) {
+        generateHorses({ commit }: { commit: Function }) {
             commit('setHorses', generateHorses())
         },
-        generateRaceSchedule({ state, commit }) {
+        generateRaceSchedule({ state, commit }: { state: State; commit: Function }) {
             const schedule: RaceRound[] = roundDistances.map((distance, idx) => {
                 const shuffled = [...state.horses].sort(() => 0.5 - Math.random())
                 return {
@@ -85,9 +85,11 @@ export default createStore<State>({
             })
             commit('setRaceSchedule', schedule)
         },
-        restartGame({ commit }) {
+        restartGame({ commit }: { commit: Function }) {
             commit('resetGame')
             commit('triggerRestartFlag')
         }
     }
 })
+
+export default store

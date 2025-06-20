@@ -2,6 +2,7 @@ lockfileVersion: 5.3
 
 specifiers:
   '@tailwindcss/vite': ^4.1.10
+  '@types/node': ^24.0.3
   '@vitejs/plugin-vue': ^5.2.3
   '@vue/tsconfig': ^0.7.0
   element-plus: ^2.10.2
@@ -20,10 +21,11 @@ dependencies:
   vuex: 4.0.2_vue@3.5.17
 
 devDependencies:
+  '@types/node': 24.0.3
   '@vitejs/plugin-vue': 5.2.4_vite@6.3.5+vue@3.5.17
   '@vue/tsconfig': 0.7.0_typescript@5.8.3+vue@3.5.17
   typescript: 5.8.3
-  vite: 6.3.5
+  vite: 6.3.5_@types+node@24.0.3
   vue-tsc: 2.2.10_typescript@5.8.3
 
 packages:
@@ -670,7 +672,7 @@ packages:
       '@tailwindcss/node': 4.1.10
       '@tailwindcss/oxide': 4.1.10
       tailwindcss: 4.1.10
-      vite: 6.3.5
+      vite: 6.3.5_@types+node@24.0.3
     dev: false
 
   /@types/estree/1.0.8:
@@ -687,6 +689,12 @@ packages:
     resolution: {integrity: sha512-KJ65INaxqxmU6EoCiJmRPZC9H9RVWCRd349tXM2M3O5NA7cY6YL7c0bHAHQ93NOfTObEQ004kd2QVHs/r0+m4g==}
     dev: false
 
+  /@types/node/24.0.3:
+    resolution: {integrity: sha512-R4I/kzCYAdRLzfiCabn9hxWfbuHS573x+r0dJMkkzThEa7pbrcDWK+9zu3e7aBOouf+rQAciqPFMnxwr0aWgKg==}
+    dependencies:
+      undici-types: 7.8.0
+    dev: true
+
   /@types/web-bluetooth/0.0.16:
     resolution: {integrity: sha512-oh8q2Zc32S6gd/j50GowEjKLoOVOwHP/bWVjKJInBwQqdOYMdPrf1oVlelTlyfFK3CKxL1uahMDAr+vy8T7yMQ==}
     dev: false
@@ -698,7 +706,7 @@ packages:
       vite: ^5.0.0 || ^6.0.0
       vue: ^3.2.25
     dependencies:
-      vite: 6.3.5
+      vite: 6.3.5_@types+node@24.0.3
       vue: 3.5.17_typescript@5.8.3
     dev: true
 
@@ -1276,7 +1284,11 @@ packages:
     hasBin: true
     dev: true
 
-  /vite/6.3.5:
+  /undici-types/7.8.0:
+    resolution: {integrity: sha512-9UJ2xGDvQ43tYyVMpuHlsgApydB8ZKfVYTsLDhXkFL/6gfkp+U8xTGdh8pMJv1SpZna0zxG1DwsKZsreLbXBxw==}
+    dev: true
+
+  /vite/6.3.5_@types+node@24.0.3:
     resolution: {integrity: sha512-cZn6NDFE7wdTpINgs++ZJ4N49W2vRp8LCKrn3Ob1kYNtOo21vfDoaV5GzBfLU4MovSAB8uNRm4jgzVQZ+mBzPQ==}
     engines: {node: ^18.0.0 || ^20.0.0 || >=22.0.0}
     hasBin: true
@@ -1316,6 +1328,7 @@ packages:
       yaml:
         optional: true
     dependencies:
+      '@types/node': 24.0.3
       esbuild: 0.25.5
       fdir: 6.4.6_picomatch@4.0.2
       picomatch: 4.0.2

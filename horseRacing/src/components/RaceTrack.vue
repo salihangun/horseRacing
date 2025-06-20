@@ -12,7 +12,7 @@
             <div v-for="(horse, idx) in currentRoundData.horses" :key="horse.id" class="lane">
               <div
                   class="horse"
-                  :style="horseStyle(idx, horse)"
+                  :style="horseStyle(idx)"
               >
                 <span class="color-dot" :style="{ backgroundColor: horse.color }"></span>
                 <span class="horse-name">{{ horse.name }}</span>
@@ -40,7 +40,6 @@
 import { ref, computed, watch, nextTick } from 'vue'
 import { useStore } from 'vuex'
 import horseImg from '@/assets/horse.gif'
-
 const store = useStore()
 const animating = ref(false)
 const horsePositions = ref<number[]>([])
@@ -51,7 +50,7 @@ const HORSE_WIDTH = 200
 
 const currentRoundData = computed(() => store.state.raceSchedule[store.state.currentRound])
 
-function horseStyle(idx: number, horse: any) {
+function horseStyle(idx: number) {
   let left = horsePositions.value[idx] ?? 0
   if (left === 100 && laneWidth.value) {
     const percent = ((laneWidth.value - HORSE_WIDTH) / laneWidth.value) * 100
@@ -90,7 +89,7 @@ function startRound() {
 
   // Kondisyon büyük olan hızlı bitirsin: min oran 0.7, max oran 1.1 (yani %70 ile %110 arasında)
   const horses = currentRoundData.value.horses
-  const conditions = horses.map(h => h.condition)
+  const conditions = horses.map((h: any) => h.condition)
   const maxCond = Math.max(...conditions)
   const minCond = Math.min(...conditions)
 
@@ -105,7 +104,7 @@ function startRound() {
 
   nextTick(() => {
     // 1. Her at için transition'ı ayarla
-    horseTransitions.value = horses.map(h =>
+    horseTransitions.value = horses.map((h: any) =>
         `left ${getDuration(h.condition)}s linear`
     )
     animating.value = true
@@ -114,7 +113,7 @@ function startRound() {
     horsePositions.value = new Array(10).fill(100)
 
     // 3. Bitme sırasını takip et
-    horses.forEach((h, idx) => {
+    horses.forEach((h: any, idx: number) => {
       const duration = getDuration(h.condition) * 1000
       setTimeout(() => {
         finishOrder.value.push(idx)

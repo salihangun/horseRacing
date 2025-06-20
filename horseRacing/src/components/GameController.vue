@@ -24,13 +24,13 @@ function generateHorses() {
 function generateRaceSchedule() {
   store.dispatch('generateRaceSchedule')
   setTimeout(() => {
-    window.scrollTo({ top: 850, behavior: 'smooth' })
+    window.scrollTo({ top: 650, behavior: 'smooth' })
   }, 100);
 }
 function startRace() {
   store.commit('setIsRacing', true)
   setTimeout(() => {
-    window.scrollTo({ top: 1850, behavior: 'smooth' })
+    window.scrollTo({ top: 1200, behavior: 'smooth' })
   }, 100);
 }
 function restartGame() {
