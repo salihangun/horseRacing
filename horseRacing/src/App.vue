@@ -6,22 +6,22 @@
   </el-row>
 
   <el-row class="row-bg">
-    <el-col :span="24"><div class="grid-content " />
+    <el-col :span="24">
       <HorseList />
     </el-col>
   </el-row>
 
   <el-row class="row-bg">
-    <el-col :span="24"><div class="grid-content mt-20" />
+    <el-col :span="24">
       <RoundSchedule/>
     </el-col>
   </el-row>
 
   <el-row class="row-bg">
-    <el-col :span="24"><div class="grid-content mt-20" />
+    <el-col :span="24">
       <RaceTrack/>
     </el-col>
-    <el-col :span="24"><div class="grid-content mt-20" />
+    <el-col :span="24">
       <RaceResults/>
     </el-col>
   </el-row>

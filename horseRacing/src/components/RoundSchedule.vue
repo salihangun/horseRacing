@@ -1,8 +1,8 @@
 <template>
-  <div v-if="schedule.length" class="round-schedule">
+  <div v-if="schedule.length" class="round-schedule mt-20">
     <el-row class="row-bg">
       <el-col :span="24"><div class="grid-content" />
-        <h2 class="mb-5 text-lg font-semibold pl-3">Yarış Takvimi (6 Round):</h2>
+        <h2 class="mb-5 text-lg font-semibold pl-3">Race Program (6 Round):</h2>
       </el-col>
     </el-row>
     <el-row class="row-bg">

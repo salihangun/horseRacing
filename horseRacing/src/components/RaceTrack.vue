@@ -1,7 +1,7 @@
 <template>
-  <div v-if="currentRoundData">
+  <div v-if=" store.state.isRacing">
     <el-row class="row-bg">
-      <el-col :span="24"><div class="grid-content" />
+      <el-col :span="24"><div class="grid-content mt-20" />
         <h2 class="mb-5 text-lg font-semibold pl-3">Round {{ store.state.currentRound + 1 }} / 6 - {{ currentRoundData.distance }}m</h2>
       </el-col>
     </el-row>
@@ -40,6 +40,10 @@
 import { ref, computed, watch, nextTick } from 'vue'
 import { useStore } from 'vuex'
 import horseImg from '@/assets/horse.gif'
+
+const raceAudio = new Audio('/race.webm')
+raceAudio.loop = true
+
 const store = useStore()
 const animating = ref(false)
 const horsePositions = ref<number[]>([])
@@ -53,7 +57,8 @@ const currentRoundData = computed(() => store.state.raceSchedule[store.state.cur
 function horseStyle(idx: number) {
   let left = horsePositions.value[idx] ?? 0
   if (left === 100 && laneWidth.value) {
-    const percent = ((laneWidth.value - HORSE_WIDTH) / laneWidth.value) * 100
+    //yarış bitiminde at ekrandan cıkmasın istersen + yerine - ver
+    const percent = ((laneWidth.value + HORSE_WIDTH) / laneWidth.value) * 100
     left = percent
   }
   return {
@@ -83,11 +88,10 @@ function startRound() {
   animating.value = false
 
   const roundDistance = currentRoundData.value.distance
-  const baseDuration = 2.5 // sn
+  const baseDuration = 10 // sn
   const durationPerMeter = baseDuration / 1000 // sn/metre
   const roundDuration = roundDistance * durationPerMeter // sn
 
-  // Kondisyon büyük olan hızlı bitirsin: min oran 0.7, max oran 1.1 (yani %70 ile %110 arasında)
   const horses = currentRoundData.value.horses
   const conditions = horses.map((h: any) => h.condition)
   const maxCond = Math.max(...conditions)
@@ -109,6 +113,13 @@ function startRound() {
     )
     animating.value = true
 
+    try {
+      raceAudio.currentTime = 0
+      raceAudio.play()
+    } catch (e) {
+      console.warn('Audio auto-start failed.')
+    }
+
     // 2. Hepsini aynı anda finish'e gönder
     horsePositions.value = new Array(10).fill(100)
 
@@ -124,6 +135,8 @@ function startRound() {
             distance: currentRoundData.value.distance
           })
           animating.value = false
+          raceAudio.pause()
+          raceAudio.currentTime = 0
         }
       }, duration)
     })
@@ -143,6 +156,8 @@ function runNextRound() {
     }, 50)
   } else {
     store.commit('setIsRacing', false)
+    raceAudio.pause()
+    raceAudio.currentTime = 0
   }
 }
 watch(() => store.state.restartFlag, () => {
@@ -150,12 +165,32 @@ watch(() => store.state.restartFlag, () => {
   horsePositions.value = new Array(10).fill(0)
   horseTransitions.value = new Array(10).fill('none')
   finishOrder.value = []
+  raceAudio.pause()
+  raceAudio.currentTime = 0
 })
 </script>
 <style scoped>
 .lane { height: 48px; border-bottom: 1px dashed #bbb; position: relative; margin-bottom: 10px; background: #f9f9f9; }
-.horse { position: absolute; top: 6px; left: 0; min-width: 90px; height: 36px; display: flex; align-items: center; font-size: 1.4rem; padding-left: 8px; font-weight: bold; box-shadow: 0 2px 6px #0001; }
-.horse-name { margin-left: 6px; font-size: 1rem; font-weight: bold; }
+.horse {
+  position: absolute;
+  top: 6px;
+  left: 0;
+  width: 190px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  font-size: 1.4rem;
+  padding-left: 8px;
+  font-weight: bold;
+}
+.horse-name { margin-left: 6px;
+  font-size: 1rem;
+  font-weight: bold;
+  width: calc(100% - 66px);
+  white-space: nowrap;
+  overflow: hidden !important;
+  text-overflow: ellipsis;
+}
 .finish { position: absolute; right: 0; top: 0; height: 100%; width: 8px; background: repeating-linear-gradient(45deg, #d33, #d33 4px, #fff 4px, #fff 8px); border-radius: 6px; }
 .next-btn { margin: 20px auto 0 auto; display: block;  }
 </style>
